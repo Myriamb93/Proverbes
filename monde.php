@@ -23,12 +23,12 @@
                                     datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) 
                                     {
                                      
-                                    });
+                                    });                         
+
                                     datamap.svg.selectAll('.datamaps-subunit').on('mousedown', function(geography) 
                                     {
                                     	mouseDown(geography);                                                                       
                                     });
-
                              
                                     datamap.svg.selectAll('.datamaps-subunit').on('mouseup', function(geography)
                                    {
@@ -44,6 +44,7 @@
 
 
  var timeout ;
+ var m = {}; 
  
 function mouseDown(geography){
  
@@ -56,11 +57,11 @@ function mouseDown(geography){
             }else{
               data[geography.id] = 1;
             }
-            var m = {};                                        
+                                                   
             m[geography.id] = color(data[geography.id]);
             map.updateChoropleth(m);}, 100);
           
-           
+
     return false;
 }
 
@@ -73,9 +74,16 @@ clearInterval(timeout);
 
 
 
+function dosomething(geography)
+{
 
+  if(data[geography.id]){
 
+    
+  }
+}
 
+  
 
 
 /*
