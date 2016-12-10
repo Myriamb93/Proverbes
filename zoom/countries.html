@@ -7,15 +7,15 @@
   pointer-events: all;
 }
 
-#states {
+#countries {
   fill: #aaa;
 }
 
-#states .active {
+#countries .active {
   fill: orange;
 }
 
-#state-borders {
+#country-borders {
   fill: none;
   stroke: #fff;
   stroke-width: 1.5px;
@@ -26,8 +26,8 @@
 
 </style>
 <body>
-<script src="js/d3.v3.min.js"></script>
-<script src="js/topojson.v1.min.js"></script>
+<script src="../js/d3.v3.min.js"></script>
+<script src="../js/topojson.v1.min.js"></script>
 <script>
 
 var width = 960,
@@ -53,20 +53,20 @@ svg.append("rect")
 
 var g = svg.append("g");
 
-d3.json("/mbostock/raw/4090846/us.json", function(error, us) {
+d3.json("http://localhost:8080/Proverbes/zoom/world.json", function(error, world) {
   if (error) throw error;
 
   g.append("g")
-      .attr("id", "states")
+      .attr("id", "countries")
     .selectAll("path")
-      .data(topojson.feature(us, us.objects.states).features)
+      .data(topojson.feature(world, world.objects.countries).features)
     .enter().append("path")
       .attr("d", path)
       .on("click", clicked);
 
   g.append("path")
-      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-      .attr("id", "state-borders")
+      .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+      .attr("id", "country-borders")
       .attr("d", path);
 });
 

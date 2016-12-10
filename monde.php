@@ -1,23 +1,69 @@
 <html>
   <head>
     <title> Proverbes</title>
+    <style type="text/css">#container {
+  margin-bottom: 5px;
+  overflow: hidden;
+  border: 2px solid silver;
+  border-radius: 6px;
+  background: white;
+}
+
+</style>
+<link rel="stylesheet" type="text/css" href="css/font-awesome/css/font-awesome.css" />
   </head>
     <body>
+
       <script src="js/d3.js"></script>
       <script src="js/topojson.js"></script>
       <script src="js/datamaps.world.js"></script>
-      <div id="container" style="position: relative; width: 800px; height: 500px;"></div>
+      <div id="container"  style="  width: 800px; height: 500px;"  ></div>
+      <button class="zoom-button" data-zoom="out"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
+      <button class="zoom-button" data-zoom="reset"><i class="fa fa-undo" aria-hidden="true"></i></button>
+      <button class="zoom-button" data-zoom="in" ><i class="fa fa-search-plus" aria-hidden="true"></i></button>
+ 
+
       <script>
-      	var data = [], mousedownID = -1;  //Global ID of mouse down interval
+      	var data = [];   
       	var color = d3.scale.linear().domain([0,50]).range(["green","red"]);
         var map = new Datamap({
                                  element: document.getElementById('container'), 
-                                 fills: { defaultFill: 'rgba(95,0,45,0.9)'
+                                 fills: { defaultFill: 'rgba(167,236,151,1)'
                                         },
                                         geographyConfig: {
                                           highlightOnHover: false,
                                           popupOnHover: true   
                                       },
+
+                           /* setProjection: function(element)
+                           {
+                              var projection = d3.geo.equirectangular()
+                                .center([23, -3])
+                                .rotate([4.4, 0])
+                                .scale(400)
+                                .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+                              var path = d3.geo.path()
+                                .projection(projection);
+
+                              return {path: path, projection: projection};
+                          },
+
+
+                          data: {
+                            'ZAF': { fillKey: 'blue' },
+                            'ZWE': { fillKey: 'lt25' },
+                            'NGA': { fillKey: 'lt50' },
+                            'MOZ': { fillKey: 'eq50' },
+                            'MDG': { fillKey: 'eq50' },
+                            'EGY': { fillKey: 'gt75' },
+                            'TZA': { fillKey: 'gt75' },
+                            'LBY': { fillKey: 'eq0' },
+                            'DZA': { fillKey: 'gt500' },
+                            'SSD': { fillKey: 'pink' },
+                            'SOM': { fillKey: 'gt50' },
+                            'GIB': { fillKey: 'eq50' },
+                            'AGO': { fillKey: 'lt50' }
+                          },*/
                                   done: function(datamap) 
                                   {
                                     datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) 
@@ -34,10 +80,16 @@
                                    {
                                     	mouseUp();
                                    });
+
+
+                                
+
                                     datamap.svg.selectAll('.datamaps-subunit').on('mouseout', function(geography)
                                             {
                                     		mouseUp();
                                     	});
+
+
                                   }
             
                                 });
