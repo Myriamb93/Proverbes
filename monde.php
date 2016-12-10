@@ -9,14 +9,14 @@
       <div id="container" style="position: relative; width: 800px; height: 500px;"></div>
       <script>
       	var data = [], mousedownID = -1;  //Global ID of mouse down interval
-      	var color = d3.scale.linear().domain([0,100]).range(["green","red"]);
+      	var color = d3.scale.linear().domain([0,50]).range(["green","red"]);
         var map = new Datamap({
                                  element: document.getElementById('container'), 
                                  fills: { defaultFill: 'rgba(95,0,45,0.9)'
                                         },
                                         geographyConfig: {
                                           highlightOnHover: false,
-                                          popupOnHover: true
+                                          popupOnHover: true   
                                       },
                                   done: function(datamap) 
                                   {
@@ -29,10 +29,7 @@
                                     	mouseDown(geography);                                                                       
                                     });
 
-                                   /* datamap.svg.selectAll('.datamaps-subunit').on('mouseover', function(geography) 
-                                    {
-                                      mouseOver(geography);                                                                       
-                                    });*/
+                             
                                     datamap.svg.selectAll('.datamaps-subunit').on('mouseup', function(geography)
                                    {
                                     	mouseUp();
@@ -47,7 +44,7 @@
 
 
  var timeout ;
- var test= false ;
+ 
 function mouseDown(geography){
  
     timeout = setInterval( function(){
@@ -62,8 +59,8 @@ function mouseDown(geography){
             var m = {};                                        
             m[geography.id] = color(data[geography.id]);
             map.updateChoropleth(m);}, 100);
-            test= true ; 
-
+          
+           
     return false;
 }
 
@@ -76,12 +73,8 @@ clearInterval(timeout);
 
 
 
-/*function mouseOver(geography){
-  if (test)
 
-  return '<div class="hoverinfo"><strong>' + data[geography.id] + '</strong></div>';
-}
-*/
+
 
 
 
