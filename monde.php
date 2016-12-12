@@ -24,11 +24,11 @@
  
 
       <script>
-      	var data = [];   
-      	var color = d3.scale.linear().domain([0,50]).range(["green","red"]);
+      	var data = [], maxDomain = 32, inc = true;   
+      	var color = d3.scale.linear().domain([0,maxDomain]).range(["green","red"]);
         var map = new Datamap({
                                  element: document.getElementById('container'), 
-                                 fills: { defaultFill: 'rgba(167,236,151,1)'
+                                 fills: { defaultFill: 'green'
                                         },
                                         geographyConfig: {
                                           highlightOnHover: false,
@@ -104,11 +104,14 @@ function mouseDown(geography){
 
 
             if(data[geography.id]){
-
-              data[geography.id] ++;
+				if(data[geography.id] >= maxDomain)
+					inc	= false;	              					
+				if(data[geography.id] <= 1)
+					inc	= true;
             }else{
-              data[geography.id] = 1;
+              data[geography.id] = 0;
             }
+            if(inc) data[geography.id] ++; else data[geography.id] --;
                                                    
             m[geography.id] = color(data[geography.id]);
             map.updateChoropleth(m);}, 100);
