@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="css/resultz.css">
+<link rel="stylesheet" href="css/circle.css">
+<style type="text/css">
+    object
+    {
+        height: 500px;
+        width: 900px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+</header>
+ 
+
+ <script>
+function load_carta() {
+     document.getElementById("contentt").innerHTML='<object type="text/html" data="carta.html" ></object>';
+}
+
+
+function load_emotions() {
+     document.getElementById("contentt").innerHTML='<object type="text/html" data="emotions.html" ></object>';
+}
+
+function load_relations() {
+     document.getElementById("contentt").innerHTML='<object type="text/html" data="relations.html" ></object>';
+}
+</script>
+
+<nav>
+  <h1>User Results</h1>
+
+ 
+
+<input type="button" value="Emotions" class="myButton" onclick="load_emotions()"> <input type="button" value="Origins" class="myButton" onclick="load_carta()"> <input type="button" value="Relations" class="myButton"  onclick="load_relations()"> 
+<br>
+        <div class="page">
+
+            
+
+<div class="dark-area clearfix">
+            <!-- green -->
+            <div class="clearfix">
+
+                <div class="c100 p67 small dark green">
+                    <span>67%</span>
+                    <div class="slice">
+                        <div class="bar"></div>
+                        <div class="fill"></div>
+                    </div>
+                </div>
+
+                <div class="c100 p25 small dark green">
+                    <span>25%</span>
+                    <div class="slice">
+                        <div class="bar"></div>
+                        <div class="fill"></div>
+                    </div>
+                </div>
+
+                <div class="c100 p12 small dark green">
+                    <span>12%</span>
+                    <div class="slice">
+                        <div class="bar"></div>
+                        <div class="fill"></div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /green -->
+          
+
+        </div>
+  
+
+</nav>
+
+<article>
+
+ <div id="contentt">
+ <script type="text/javascript">load_emotions();</script> 
+  </div>
+
+</article>
+  <small><footer>Copyright &copy; W3Schools.com</footer></small>
+
+
+</div>
+
+</body>
+</html>

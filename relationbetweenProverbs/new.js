@@ -22,7 +22,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     };
 
   
-  
+	
  
 
     thisGraph.svg = svg;
@@ -34,9 +34,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           .attr('class', 'link dragline hidden')
           .attr('d', 'M0,0L0,0')
          .style('marker-end', 'url(#mark-end-arrow)');
-  
-  
-   thisGraph.dragLine = svgG.append('svg:path')
+	
+	
+	 thisGraph.dragLine = svgG.append('svg:path')
           .attr('class', 'link dragline hidden')
           .attr('d', 'M0,0L0,0')
           .style('marker-end', 'url(#mark-end-arrow)');
@@ -45,7 +45,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     thisGraph.paths = svgG.append("g").selectAll("g");
     thisGraph.rect = svgG.append("g").selectAll("g");
 
-  
+	
 
     thisGraph.drag = d3.behavior.drag()
           .origin(function(d){
@@ -164,7 +164,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     DELETE_KEY: 46,
     ENTER_KEY: 13,
     nodeRadius: 50
-  
+	
   };
 
   /* PROTOTYPE FUNCTIONS */
@@ -206,14 +206,14 @@ document.onload = (function(d3, saveAs, Blob, undefined){
   /* insert svg line breaks: taken from http://stackoverflow.com/questions/13241475/how-do-i-include-newlines-in-labels-in-d3-charts */
   GraphCreator.prototype.insertTitleLinebreaks = function (gEl, title) {
     
-  var words = title.split(/\s+/g),
+	var words = title.split(/\s+/g),
         nwords = words.length;
-      var longuer=title.length;
+	    var longuer=title.length;
         var el = gEl.append("text")
           .attr("text-anchor","start")
           .attr("dy",  (nwords+20))
-      .attr("dx",(nwords+40));
-     
+		  .attr("dx",(nwords+40));
+		 
 
    for (var i = 0; i < words.length; i++) {
       var tspan = el.append('tspan').text(words[i]);
@@ -222,7 +222,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     }
     console.log("hello");
-  
+	
   };
 
   
@@ -315,20 +315,20 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         placePad  =  5*curScale,
         useHW = curScale > 1 ? nodeBCR.width*0.71 : consts.nodeRadius*1.42;
         console.log("hello:",useHW);
-     
+		 
     // replace with editableconent text
     var d3txt = thisGraph.svg.selectAll("foreignObject")
           .data([d])
           .enter()
           .append("foreignObject")
           .attr("x", nodeBCR.left + placePad )
-      .attr("y", nodeBCR.top + placePad)
+		  .attr("y", nodeBCR.top + placePad)
          .attr("height", 2*useHW)
           .attr("width", useHW)
           .append("xhtml:p")
           .attr("id", consts.activeEditId)
           .attr("contentEditable", "true")
-      .text(d.title)
+		  .text(d.title)
           .on("mousedown", function(d){
             d3.event.stopPropagation();
           })
@@ -336,21 +336,21 @@ document.onload = (function(d3, saveAs, Blob, undefined){
             d3.event.stopPropagation();
             if (d3.event.keyCode == consts.ENTER_KEY && !d3.event.shiftKey){
               this.blur();
-        
+			  
             }
           })
           .on("blur", function(d){
             d.title = this.textContent;
 
-  /*var bbox = d3txt.node().getBBox();
+	/*var bbox = d3txt.node().getBBox();
       var width1 = bbox.width;
       var height1 = bbox.height;*/
    
-      
-      var lg=d.title.split(/\s+/g)[0].length;
-      
-      var lg1=d.title.split(/\s+/g).length==1? 40 :(d.title.split(/\s+/g).length)*20;
-      var rectangle = d3node.append("rect")
+			
+			var lg=d.title.split(/\s+/g)[0].length;
+			
+			var lg1=d.title.split(/\s+/g).length==1? 40 :(d.title.split(/\s+/g).length)*20;
+			var rectangle = d3node.append("rect")
           .attr("dx", d.x)
            .attr("dy", d.y)
          .attr("height",lg1)
@@ -358,10 +358,10 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           .attr("fill", "pink");
           
       
-      
+		  
           thisGraph.insertTitleLinebreaks(d3node, d.title);
-           d3.select(this.parentElement).remove();
-        
+			     d3.select(this.parentElement).remove();
+			  
           });
     return d3txt;
   
@@ -535,7 +535,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     
     // update existing nodes
     thisGraph.rect = thisGraph.rect.data(thisGraph.nodes, function(d){ return d.id;});
-  
+	
     thisGraph.rect.attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";});
 
     // add new nodes
@@ -559,14 +559,14 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
       })
       .call(thisGraph.drag);
-  
-  
-  
+	
+	
+	
   newGs.append("rect")
      // .attr("r", String(consts.nodeRadius))
-  .attr("width",100)
-  .attr("height",50)
-  .attr("fill",'rgb(248, 248, 248)');
+	.attr("width",100)
+	.attr("height",50)
+	.attr("fill",'rgb(248, 248, 248)');
 
     newGs.each(function(d){
       thisGraph.insertTitleLinebreaks(d3.select(this), d.title);
@@ -619,6 +619,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         .attr("width", width)
         .attr("height", height);
   var graph = new GraphCreator(svg, nodes, null);
-      graph.setIdCt(2);
-      graph.updateGraph();
+			graph.setIdCt(2);
+			graph.updateGraph();
 })(window.d3, window.saveAs, window.Blob);
