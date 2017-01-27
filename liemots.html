@@ -4,13 +4,13 @@
 		<title>Générateur de mots à lier</title>
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="../css/bootstrap.min.css">
-		<link rel="stylesheet" href="../css/font-awesome.css">
-		<link rel="stylesheet" href="../css/ac-liemots.css">
-		<script type="text/javascript" src="../js/jquery.min.js"></script>
-		<script type="text/javascript" src="../js/bootstrap.min.js"></script>  		
-    	<script type="text/javascript" src="../js/d3.v4.js"></script>
-    	<script type="text/javascript" src="../js/autocomplete.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+		<link rel="stylesheet" href="css/ac-liemots.css">
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>  		
+    	<script type="text/javascript" src="js/d3.v4.js"></script>
+    	<script type="text/javascript" src="js/autocomplete.js"></script>
     	
 		<style>
 			.btnIHM {
@@ -68,8 +68,8 @@
     }    
     
     //Load US States as options from CSV - but this can also be created dynamically
-    var urlD = "../data/proverbeHaiti.csv";
-    var urlG = "../data/proverbeFrance.csv";
+    var urlD = "data/proverbeHaiti.csv";
+    var urlG = "data/proverbeFrance.csv";
     d3.csv(urlD,function (csv) {
         keysD=csv;
         rdmD = d3.randomUniform(0, keysD.length-1);
