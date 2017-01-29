@@ -22,7 +22,7 @@
 			}	
 			line {
 			    stroke: steelblue;
-			    stroke-width: 2px;
+			    stroke-width: 3px;
 			    stroke-linecap: round;
 			}
 			.cD{
@@ -263,17 +263,44 @@
 	        .attr("y2", m[1]);
 	    lineEnd = false;
 	    svgContainer.on("mousemove", mousemove);
+
+
+
 	}
 
 	function mousemove() {
-	    var m = d3.mouse(this);
-	    line.attr("x2", m[0])
-	        .attr("y2", m[1]);
+	   var m = d3.mouse(this);
+	    var c = d3.select(this);
+			line.attr("x2", m[0]);
+            line.attr("y2", m[1]);
+
+    if(d3.select(this).attr("class") == "cS") {
+            line.attr("x2", m[0]);
+            line.attr("y2", m[1]);
+} else {
+            line.attr("x2", d3.select(this).attr("cx"));
+            line.attr("y2", d3.select(this).attr("cy"));
+}
+
+
+
+
 	}
 
 	function mouseup() {
+		var m = d3.mouse(this);
 	    var c = d3.select(this);
-	    c.attr("r", r*2);
+
+	    //c.attr("r", r*2);
+	    if (lineEnd==true)
+	     {
+	    	if (Math.sqrt((m[0]-c[0])*(m[0]-c[0]) + (m[1]-c[1])*(m[1]-c[1])) < c.attr("r"))
+	    	 {
+	    		line.attr("x2", c[0])
+	        	.attr("y2", c[1]);
+			 }
+	    }
+	  
 	}	
 
 	function mouseupVide() {
@@ -285,15 +312,21 @@
 	function mouseoverCircle(){
 	    var c = d3.select(this);
 	    c.attr("class", "cS");
-	    lineEnd = true;	    
+		 //console.log(c.attr("r")); 
+	    lineEnd = true;	 
+
+
+
 	}
 	function mouseoutCircle(d){
 	    var c = d3.select(this);
 	    
 		if(d.substr(0,3)=='acd')
             c.attr("class", "cD");
+        	
         else
-             c.attr("class", "cG");   
+             c.attr("class", "cG");
+  
 	    lineEnd = false;	    
 	}
 
