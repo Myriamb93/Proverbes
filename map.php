@@ -1,12 +1,20 @@
 <html>
   <head>
-    <title> Proverbes</title>
+    <title> Worl Map</title>
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+   <link rel="stylesheet" href="css/bootstrap.min.css">
+   <link rel="stylesheet" href="css/mapmot.css">
     <style type="text/css">
+.page-header{padding-bottom:9px;margin:40px 0 20px;border-bottom:1px solid #eee}
+.text-center{text-align:center}
+
+
     body {
-  background-image: url(low_contrast_linen_@2X.png);
+
   background-size: 256px;
-  background-color: #252525;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  background-color: white;
+  font-family:sans-serif;
+
   margin: 0;
 }
 h4 {
@@ -23,18 +31,19 @@ h4 {
   stroke: #fff;
   stroke-width: 1.5px;
 }
-.text{
-  font-size: 10px;
-  text-transform:capitalize;
-}
+
+
 #container {
-  margin: 0;
-  border: 1px solid #3a3f4f;
-  border-radius: 2px;
-  height:100%;
-  overflow:hidden;
-  background: #575e70;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+   border-style: groove;
+   cursor: hand; 
+
 }
+
+
+
 .hidden { 
   display: none; 
 }
@@ -59,6 +68,11 @@ div.tooltip {
   stroke-width: 1px;
 }
 
+.col-sm-12{
+
+    margin-left: 5em;
+}
+
 
 
 </style>
@@ -66,12 +80,32 @@ div.tooltip {
   </head>
     <body>
 
-     <h4>Your location is: <span class="city"></span></h4>
-<div id="container"></div>
+    <div class="page-header text-center">
+  <h3>World Map</h3>
+</div>
+
+    <div class="row" id="lstBoutons">
+    <div class="col-sm-12" >
+      
+    <i class="fa fa-3x fa-cloud-upload" id="btnUp" aria-hidden="true" title="upload"></i>&nbsp &nbsp 
+    <i class="fa fa-3x fa-cloud-download" id="btnDown" aria-hidden="true" title="download"></i>&nbsp &nbsp 
+    <i class="fa fa-3x fa-remove" id="btnDel" aria-hidden="true" title="reset"></i>
+
+     
+
+    </div>  
+  </div> <br>
+<div id="container">
+
+
+</div>
+
 
 <script src="js/d3.v3.min.js"></script>
 <script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
 <script src="js/topojson.v1.min.js"></script>
+
+
 
 
       <script>
@@ -107,7 +141,7 @@ function setup(width,height){
   path = d3.geo.path().projection(projection);
 
   svg = d3.select("#container").append("svg")
-  .attr("width", width)
+  .attr("width", 1210)
   .attr("height", height + 8)
   .call(zoom)
   .on("click", click)
@@ -115,7 +149,66 @@ function setup(width,height){
 
   g = svg.append("g");
 
+
+  setButton();
+    setButton1();
+    setButton2();
+
 }
+
+
+function setButton1(){
+    d3.select("#btnDown")
+      .on("click",setRdmListe1)
+      .style("cursor","pointer");
+      //.attr("class","btnIHM");    
+  }
+
+
+function setRdmListe1(d,i){
+  console.log('download');
+  var savemap = [];
+    
+       for (j = 0; j <= 196 ; j++) 
+      { 
+          savemap.push({country: d.properties.name, percentage: pas[d.id]});
+      }
+        var blob = new Blob([window.JSON.stringify({"selections": savemap})], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, "mymap.json");
+
+  }
+
+
+function setButton2(){
+    d3.select("#btnUp")
+      .on("click",setRdmListe2)
+      .style("cursor","pointer");
+      //.attr("class","btnIHM");    
+  }
+
+
+function setRdmListe2(){
+  console.log('Upload');
+    
+  }
+
+
+
+
+function setButton(){
+    d3.select("#btnDel")
+      .on("click",setRdmListe)
+      .style("cursor","pointer");
+      //.attr("class","btnIHM");    
+  }
+
+
+  function setRdmListe(){
+    location.reload();
+  }
+
+
+
 
 d3.json("https://api.github.com/gists/9398333", function(error, root) {
 
@@ -155,7 +248,7 @@ function draw(topo) {
   //offsets for tooltips
   var offsetL = document.getElementById('container').offsetLeft+20;
   var offsetT = document.getElementById('container').offsetTop+10;
-  var color = d3.scale.linear().domain([0,100]).range(["green","red"]);
+  var color = d3.scale.linear().domain([0,100]).range(["blue","red"]);
  var pas = [];
 var ic = 1;
  //var ismousedown=-1;
@@ -165,10 +258,16 @@ var colorInterval = null;
   .on("mousemove", function(d,i) {
 
     var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
-
+    if (pas[d.id]) {
     tooltip.classed("hidden", false)
     .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
-    .html(d.properties.name);
+    .html(d.properties.name +" "+ pas[d.id]+"%"); 
+  }else{
+ tooltip.classed("hidden", false)
+    .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
+    .html(d.properties.name); 
+
+  }
 
   })
   .on("mouseout",  function(d,i) {
@@ -188,7 +287,7 @@ var colorInterval = null;
   .on("mousedown", function(d,i) {
     var that = this;
     ismousedown = true;
- //esetInterval xécuter la fonction à chaque 1 seconde
+
     colorInterval = window.setInterval(function () {
 
       if (ismousedown === true) 
@@ -197,17 +296,17 @@ var colorInterval = null;
            if (! pas[d.id] ) {pas[d.id] =0 ; }
 
             pas[d.id] += ic;
-            ic *= (((pas[d.id] % 100) == 0) ? -1 : 1);//si pas[d.id] modulos 100 egale 0 ic = ic * (-1) else ic = ic * 1
+            ic *= (((pas[d.id] % 100) == 0) ? -1 : 1);
 
               //console.log(ic);       
 
-                tooltip.classed("hidden", false).html(pas[d.id]);   //popup de nombre d'incrémentation       
+                tooltip.classed("hidden", false).html(pas[d.id]);   
               d3.select(that)
               .classed("active", false)
-              .style("fill", function(d, i) {return color(pas[d.id]);return d.properties.color;});// changement de couleur
+              .style("fill", function(d, i) {return color(pas[d.id]);return d.properties.color;});
       } else 
       {
-        window.clearInterval(colorInterval);//to stop time et intialiser les valeur pas et ic
+        window.clearInterval(colorInterval);
       }
 
 
@@ -229,6 +328,8 @@ function redraw() {
   d3.select('svg').remove();
   setup(width,height);
   draw(topo);
+
+
 }
 
 
@@ -258,6 +359,11 @@ function move() {
   d3.selectAll(".country").style("stroke-width", 1.5 / s);
 
 }
+
+
+
+
+
 
 var throttleTimer;
 function throttle() {
@@ -300,7 +406,7 @@ function addpoint(longitude, latitude, text) {
   }
 
 }
-
+    
 
         
       </script>

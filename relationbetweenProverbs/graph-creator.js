@@ -221,7 +221,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         tspan.attr('x', 0).attr('dy', '15').attr('dx','40');
 
     }
-    console.log("hello");
+   // console.log("hello");
   
   };
 

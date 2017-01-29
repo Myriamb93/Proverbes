@@ -24,7 +24,19 @@
 			    stroke: steelblue;
 			    stroke-width: 2px;
 			    stroke-linecap: round;
+			}
+			.cD{
+				fill:green;
 			}		
+			.cG{
+				fill:red;
+			}		
+			.cS{
+				fill:black;
+			}		
+
+
+
 		</style>	
     	
     	
@@ -38,7 +50,13 @@
 <div class="container">
   <div class="row" id="lstBoutons">
     <div class="col-sm-12" >
-      <i class="fa fa-3x fa-random" id="btnRdm" aria-hidden="true"></i>
+      <i class="fa fa-3x fa-random" id="btnRdm" aria-hidden="true" title="randomize"></i> &nbsp &nbsp 
+		<i class="fa fa-3x fa-cloud-upload" id="btnUp" aria-hidden="true" title="upload"></i>&nbsp &nbsp 
+		<i class="fa fa-3x fa-cloud-download" id="btnDown" aria-hidden="true" title="download"></i>&nbsp &nbsp 
+		<i class="fa fa-3x fa-remove" id="btnDel" aria-hidden="true" title="reset"></i>
+
+     
+
     </div>  
   </div>
   <div class="row">
@@ -104,7 +122,8 @@
 			        return d;
 		        });
 	    	setAutocomplete();
-	    	setButton();        
+	    	setButton();    
+	    	setButton3();      
     }
 
 	function setButton(){
@@ -114,18 +133,49 @@
 			//.attr("class","btnIHM");		
 	}
 
+		function setButton1(){
+		d3.select("#btnUp")
+			.on("click",setRdmListe1)
+			.style("cursor","pointer");
+			//.attr("class","btnIHM");		
+	}
+		function setButton2(){
+		d3.select("#btnDown")
+			.on("click",setRdmListe2)
+			.style("cursor","pointer");
+			//.attr("class","btnIHM");		
+	}
+		function setButton3(){
+		d3.select("#btnDel")
+			.on("click",setRdmListe3)
+			.style("cursor","pointer");
+			//.attr("class","btnIHM");		
+	}
+
 	function setRdmListe(){
 		console.log('setRdmListe');
 		d3.selectAll("input")
 			.each(setRdmValue);
 	}
+
+
+		function setRdmListe3(){
+		console.log('setRdmListe3');
+		d3.selectAll("input")
+			.each(setRdmValue3);
+	}
+    function setRdmValue3(d){
+       var val ="Taper une lettre pour sélectionner les mots à afficher";
+	    d3.select(this).property("value", val);
+    }
+
     function setRdmValue(d){
         var val;
         if(d.substr(0,3)=='acd')
             val = keysD[Math.round(rdmD())].valeur;
         else
             val = keysG[Math.round(rdmG())].valeur;
-	    	d3.select(this).property("value", val);
+	    d3.select(this).property("value", val);
     }
     
 	function setAutocomplete(){
@@ -179,7 +229,7 @@
 			.on("mouseup", mouseup)		
 			.on("mouseover", mouseoverCircle)		
 			.on("mouseout", mouseoutCircle)		
-			.style("fill", "red");    	
+			;//.style("fill", "red");    	
 		//ajoute les points à gauche
 		var circlesGauche = svgContainer.selectAll(".cG")
 			.data(dataset.gauche)
@@ -198,17 +248,17 @@
 			.on("mouseup", mouseup)		
 			.on("mouseover", mouseoverCircle)		
 			.on("mouseout", mouseoutCircle)		
-			.style("fill", "green");    			
+			;//.style("fill", "green");    			
 	}
 
 	//pour le dessin 
 	function mousedown() {
 	    var m = d3.mouse(this);
 	    var c = d3.select(this);
-	    c.attr("r", r*2);
+	    c.attr("class", "cS");
 	    line = svgContainer.append("line")
-	        .attr("x1", m[0])
-	        .attr("y1", m[1])
+	        .attr("x1", c.attr("cx"))
+	        .attr("y1",c.attr("cy"))
 	        .attr("x2", m[0])
 	        .attr("y2", m[1]);
 	    lineEnd = false;
@@ -234,12 +284,16 @@
 
 	function mouseoverCircle(){
 	    var c = d3.select(this);
-	    c.attr("r", r*2);
+	    c.attr("class", "cS");
 	    lineEnd = true;	    
 	}
-	function mouseoutCircle(){
+	function mouseoutCircle(d){
 	    var c = d3.select(this);
-	    c.attr("r", r);
+	    
+		if(d.substr(0,3)=='acd')
+            c.attr("class", "cD");
+        else
+             c.attr("class", "cG");   
 	    lineEnd = false;	    
 	}
 
