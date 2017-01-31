@@ -210,20 +210,26 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         nwords = words.length;
 	    var longuer=title.length;
         var el = gEl.append("text")
-          .attr("text-anchor","start")
+      
+        //.attr("word-spacing","2")
+          .attr("text-anchor","middle")
+          .attr("alignment-baseline","middle")
           .attr("dy",  (nwords+20))
-		  .attr("dx",(nwords+40));
+		  .attr("dx",(nwords+50))
+     ;
 		 
 
-   for (var i = 0; i < words.length; i++) {
-      var tspan = el.append('tspan').text(words[i]);
-      if (i > 0)
+  for (var i = 0; i < words.length; i++) {
+      var tspan = el.append('tspan').text(words[i] +" ");
+      if (i > 100)
         tspan.attr('x', 0).attr('dy', '15').attr('dx','40');
 
     }
-    console.log("hello");
+   // console.log("hello");
 	
   };
+
+
 
   
   // remove edges associated with a node
@@ -326,9 +332,11 @@ document.onload = (function(d3, saveAs, Blob, undefined){
          .attr("height", 2*useHW)
           .attr("width", useHW)
           .append("xhtml:p")
+
           .attr("id", consts.activeEditId)
           .attr("contentEditable", "true")
 		  .text(d.title)
+
           .on("mousedown", function(d){
             d3.event.stopPropagation();
           })
@@ -347,19 +355,20 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       var height1 = bbox.height;*/
    
 			
-			var lg=d.title.split(/\s+/g)[0].length;
+		var lg=d.title.length;//d.title.split(/\s+/g)[0].length;
 			
-			var lg1=d.title.split(/\s+/g).length==1? 40 :(d.title.split(/\s+/g).length)*20;
+		var lg1=d.title.length; //.split(/\s+/g).length==1? 40 :(d.title.split(/\s+/g).length)*20;
+
 			var rectangle = d3node.append("rect")
-          .attr("dx", d.x)
-           .attr("dy", d.y)
-         .attr("height",lg1)
-          .attr("width", lg*16)
+          .attr("dx", d.x )//.attr("dx", d.x + d.x)
+           .attr("dy", d.y) //.attr("dy", d.y +d.y)
+           .attr("height",50)
+          .attr("width", lg*10)
           .attr("fill", "pink");
           
       
 		  
-          thisGraph.insertTitleLinebreaks(d3node, d.title);
+         thisGraph.insertTitleLinebreaks(d3node, d.title);
 			     d3.select(this.parentElement).remove();
 			  
           });
@@ -562,11 +571,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 	
 	
 	
-  newGs.append("rect")
-     // .attr("r", String(consts.nodeRadius))
-	.attr("width",100)
-	.attr("height",50)
-	.attr("fill",'rgb(248, 248, 248)');
+
 
     newGs.each(function(d){
       thisGraph.insertTitleLinebreaks(d3.select(this), d.title);
@@ -609,11 +614,12 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       yLoc = 100;
 
   // initial node data
-  var nodes = [{title: "Nouveau Proverbe", id: 0, x: xLoc, y: yLoc},
-              {title: "Nouveau Proverbe", id: 1, x: xLoc, y: yLoc + 200}];
-  var edges = [{source: nodes[1], target: nodes[0]}];
+  //var nodes = [{title: "Nouveau Proverbe", id: 0, x: xLoc, y: yLoc},
+           //   {title: "Nouveau Proverbe", id: 1, x: xLoc, y: yLoc + 200}];
+ // var edges = [{source: nodes[1], target: nodes[0]}];
 
-
+var nodes;
+var edges;
   /** MAIN SVG **/
   var svg = d3.select("body").append("svg")
         .attr("width", width)
