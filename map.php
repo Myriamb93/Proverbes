@@ -4,6 +4,12 @@
     <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
    <link rel="stylesheet" href="css/bootstrap.min.css">
    <link rel="stylesheet" href="css/mapmot.css">
+   <link rel="stylesheet" href="css/graph-creator.css" />
+
+<script src="js/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
+<script src="js/topojson.v1.min.js"></script>
+  <script src="//cdn.jsdelivr.net/filesaver.js/0.1/FileSaver.min.js"></script>
     <style type="text/css">
 .page-header{padding-bottom:9px;margin:40px 0 20px;border-bottom:1px solid #eee}
 .text-center{text-align:center}
@@ -81,18 +87,16 @@ div.tooltip {
     <body>
 
     <div class="page-header text-center">
-  <h3>World Map</h3>
-</div>
+    <h3>World Map</h3>
+    </div>
 
     <div class="row" id="lstBoutons">
     <div class="col-sm-12" >
-      
-    <i class="fa fa-3x fa-cloud-upload" id="btnUp" aria-hidden="true" title="upload"></i>&nbsp &nbsp 
-    <i class="fa fa-3x fa-cloud-download" id="btnDown" aria-hidden="true" title="download"></i>&nbsp &nbsp 
+    <i class="fa fa-3x fa-cloud-upload" id="btnupload" aria-hidden="true" title="upload"></i>&nbsp &nbsp 
+    <i class="fa fa-3x fa-cloud-download" id="btndownload" aria-hidden="true" title="download"></i>&nbsp &nbsp 
     <i class="fa fa-3x fa-remove" id="btnDel" aria-hidden="true" title="reset"></i>
-
-     
-
+ 
+    
     </div>  
   </div> <br>
 <div id="container">
@@ -101,9 +105,6 @@ div.tooltip {
 </div>
 
 
-<script src="js/d3.v3.min.js"></script>
-<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
-<script src="js/topojson.v1.min.js"></script>
 
 
 
@@ -158,29 +159,22 @@ function setup(width,height){
 
 
 function setButton1(){
-    d3.select("#btnDown")
+    d3.select("#btnupload")
       .on("click",setRdmListe1)
       .style("cursor","pointer");
       //.attr("class","btnIHM");    
   }
 
 
-function setRdmListe1(d,i){
-  console.log('download');
-  var savemap = [];
-    
-       for (j = 0; j <= 196 ; j++) 
-      { 
-          savemap.push({country: d.properties.name, percentage: pas[d.id]});
-      }
-        var blob = new Blob([window.JSON.stringify({"selections": savemap})], {type: "text/plain;charset=utf-8"});
-      saveAs(blob, "mymap.json");
+function setRdmListe1(){
+  
+  
 
   }
 
 
 function setButton2(){
-    d3.select("#btnUp")
+    d3.select("#btndownload")
       .on("click",setRdmListe2)
       .style("cursor","pointer");
       //.attr("class","btnIHM");    
@@ -188,7 +182,14 @@ function setButton2(){
 
 
 function setRdmListe2(){
-  console.log('Upload');
+    var savemap = [];
+                 d3.select("#mousedown").on("click", function(){
+                 savemap.push({country: d.properties.name, percentage: pas[d.id]});
+                   });
+                  var blob = new Blob([window.JSON.stringify({"selections": savemap})], {type: "text/plain;charset=utf-8"});
+                
+                  saveAs(blob, "myfile.json");
+              
     
   }
 
@@ -253,6 +254,8 @@ function draw(topo) {
 var ic = 1;
  //var ismousedown=-1;
 var colorInterval = null;
+
+
   //tooltips
   country
   .on("mousemove", function(d,i) {
@@ -304,6 +307,7 @@ var colorInterval = null;
               d3.select(that)
               .classed("active", false)
               .style("fill", function(d, i) {return color(pas[d.id]);return d.properties.color;});
+              
       } else 
       {
         window.clearInterval(colorInterval);
