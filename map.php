@@ -110,6 +110,7 @@ div.tooltip {
 
 
       <script>
+
 	  
   d3.select(window).on("resize", throttle);
 
@@ -129,6 +130,7 @@ var graticule = d3.geo.graticule();
 
 var tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
 var tooltip2 = d3.select("#container").append("div").attr("class", "tooltip hidden");
+var pas = [];
 
 
 setup(width,height);
@@ -182,13 +184,22 @@ function setButton2(){
 
 
 function setRdmListe2(){
-    var savemap = [];
-                 d3.select("#mousedown").on("click", function(){
-                 savemap.push({country: d.properties.name, percentage: pas[d.id]});
+      var savemap1 =[];
+
+    
+                 d3.select("#mousedown").on("click", function(a,b,c,d,sav){
+                 
+                 //savemap.push
+                    
+                
                    });
-                  var blob = new Blob([window.JSON.stringify({"selections": savemap})], {type: "text/plain;charset=utf-8"});
+		
+           
+   				 var blob = new Blob([window.JSON.stringify({"Resultat":sav})], {type: "text/plain;charset=utf-8"});
                 
                   saveAs(blob, "myfile.json");
+
+                 
               
     
   }
@@ -250,7 +261,7 @@ function draw(topo) {
   var offsetL = document.getElementById('container').offsetLeft+20;
   var offsetT = document.getElementById('container').offsetTop+10;
   var color = d3.scale.linear().domain([0,100]).range(["blue","red"]);
- var pas = [];
+ 
 var ic = 1;
  //var ismousedown=-1;
 var colorInterval = null;
@@ -287,26 +298,35 @@ var colorInterval = null;
     tooltip.classed("hidden", true);
   })*/
 
-  .on("mousedown", function(d,i) {
+  .on("mousedown", function(d,i,e,f,sav) {
+  	var savemap = [,];
     var that = this;
     ismousedown = true;
 
     colorInterval = window.setInterval(function () {
+
 
       if (ismousedown === true) 
       { 
             
            if (! pas[d.id] ) {pas[d.id] =0 ; }
 
+       
+
             pas[d.id] += ic;
             ic *= (((pas[d.id] % 100) == 0) ? -1 : 1);
 
-              //console.log(ic);       
-
-                tooltip.classed("hidden", false).html(pas[d.id]);   
+              
+               tooltip.classed("hidden", false).html(pas[d.id]); //
               d3.select(that)
               .classed("active", false)
               .style("fill", function(d, i) {return color(pas[d.id]);return d.properties.color;});
+
+				savemap.push({country: pas[d.id], percentage: d.properties.name});
+
+               this.sav=savemap;
+           
+              
               
       } else 
       {
@@ -379,9 +399,16 @@ function throttle() {
 
 
 //geo translation on mouse click in map
-function click() {
- // var latlon = projection.invert(d3.mouse(this));
- // console.log(latlon);
+function click(d) {
+ var latlon = projection.invert(d3.mouse(this));
+
+
+
+ 
+ console.log(latlon);
+ 
+
+
 }
 
 
