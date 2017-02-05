@@ -1,12 +1,13 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>Générateur de mots à lier</title>
+		<title>Connect Proverbs</title>
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
 		<link rel="stylesheet" href="css/ac-liemots.css">
+		<script src="//cdn.jsdelivr.net/filesaver.js/0.1/FileSaver.min.js"></script>
 		<script type="text/javascript" src="js/jquery.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>  		
     	<script type="text/javascript" src="js/d3.v4.js"></script>
@@ -44,7 +45,7 @@
 <body>
 
 <div class="page-header text-center">
-  <h3>Mots à lier</h3>
+  <h3>Connect Proverbs</h3>
 </div>
 
 <div class="container">
@@ -76,6 +77,8 @@
     var keysD, keysG;
     var rdmD, rdmG;
     var svgContainer, line, lineEnd=false;
+    var sav = [,];
+    var savemap = [,];
     
 	//autres variables
     var messageInput = "Taper une lettre pour sélectionner les mots à afficher";
@@ -123,53 +126,25 @@
 		        });
 	    	setAutocomplete();
 	    	setButton();    
-	    	setButton3();      
+	    	setButton3();  
+			setButton2(); 
+	    	 setButton1(); 
+	    	
+	
     }
 
-	function setButton(){
+		function setButton(){
 		d3.select("#btnRdm")
 			.on("click",setRdmListe)
 			.style("cursor","pointer");
 			//.attr("class","btnIHM");		
 	}
-
-		function setButton1(){
-		d3.select("#btnUp")
-			.on("click",setRdmListe1)
-			.style("cursor","pointer");
-			//.attr("class","btnIHM");		
-	}
-		function setButton2(){
-		d3.select("#btnDown")
-			.on("click",setRdmListe2)
-			.style("cursor","pointer");
-			//.attr("class","btnIHM");		
-	}
-		function setButton3(){
-		d3.select("#btnDel")
-			.on("click",setRdmListe3)
-			.style("cursor","pointer");
-			//.attr("class","btnIHM");		
-	}
-
 	function setRdmListe(){
 		console.log('setRdmListe');
 		d3.selectAll("input")
 			.each(setRdmValue);
 	}
-
-
-		function setRdmListe3(){
-		console.log('setRdmListe3');
-		d3.selectAll("input")
-			.each(setRdmValue3);
-	}
-    function setRdmValue3(d){
-       var val ="Taper une lettre pour sélectionner les mots à afficher";
-	    d3.select(this).property("value", val);
-    }
-
-    function setRdmValue(d){
+  function setRdmValue(d){
         var val;
         if(d.substr(0,3)=='acd')
             val = keysD[Math.round(rdmD())].valeur;
@@ -177,7 +152,71 @@
             val = keysG[Math.round(rdmG())].valeur;
 	    d3.select(this).property("value", val);
     }
+
+
+
+
+
+		function setButton1(){
+		d3.select("#btnUp")
+			.on("click",setRdmListe1)
+			.style("cursor","pointer");
+			//.attr("class","btnIHM");		
+	}
+
+	function setRdmListe1(){
+		console.log('upload');
+	
+	}
+ 
+
+
+
+
+		function setButton2(){
+		d3.select("#btnDown")
+			.on("click",setRdmListe2)
+			.style("cursor","pointer");
+			//.attr("class","btnIHM");		
+	}
+
+function setRdmListe2(){
+		console.log('Download');
+
+		   d3.select("#mousedown").on("click", function(d){
+
+                   });
     
+           
+           var blob = new Blob([window.JSON.stringify({"Resultat":sav})], {type: "text/plain;charset=utf-8"});
+                
+                  saveAs(blob, "myfile.json");
+	
+	}
+
+
+
+
+
+		function setButton3(){
+		d3.select("#btnDel")
+			.on("click",setRdmListe3)
+			.style("cursor","pointer");
+			//.attr("class","btnIHM");		
+	}
+
+		function setRdmListe3(){
+		console.log('remove');
+		d3.selectAll("input")
+			.each(setRdmValue3);
+	}
+    function setRdmValue3(d){
+       var val ="Taper une lettre pour sélectionner les mots à afficher";
+	    d3.select(this).property("value", val);
+	     location.reload();
+    }
+
+  
 	function setAutocomplete(){
 		dataset.droite.forEach(function(d){
 			autocomplete(document.getElementById(d))
@@ -199,7 +238,8 @@
 	        .onSelected(onSelect)
 	        .render();
 		})
-		setPoints();        
+		setPoints();   
+		 
 	}
 
 	function setPoints(){
@@ -228,7 +268,7 @@
             .on("mousedown", mousedown)			
 			.on("mouseup", mouseup)		
 			.on("mouseover", mouseoverCircle)		
-			//.on("mouseout", mouseoutCircle)		
+			.on("mouseout", mouseoutCircle)		
 			;//.style("fill", "red");    	
 		//ajoute les points à gauche
 		var circlesGauche = svgContainer.selectAll(".cG")
@@ -247,7 +287,7 @@
             .on("mousedown", mousedown)			
 			.on("mouseup", mouseup)		
 			.on("mouseover", mouseoverCircle)		
-			//.on("mouseout", mouseoutCircle)		
+			.on("mouseout", mouseoutCircle)		
 			;//.style("fill", "green");    			
 	}
 
@@ -255,55 +295,106 @@
 	function mousedown() {
 	    var m = d3.mouse(this);
 	    var c = d3.select(this);
-	    //c.attr("class", "cS");
+	    dc = c.attr("class");
+	    soussou = c; 
+	    c.attr("class", "cS");
+	  console.log("this is ",d3.select(this).attr("class")); 
 	    line = svgContainer.append("line")
 	        .attr("x1", c.attr("cx"))
 	        .attr("y1",c.attr("cy"))
 	        .attr("x2", m[0])
 	        .attr("y2", m[1]);
-	    //lineEnd = false;
+
+
+
+	    lineEnd = false;
 	    svgContainer.on("mousemove", mousemove);
 
+/*if (lineEnd == true){
+	 	if ( hc.attr("class") != dc )
+	    	 	 {
+	    	 	 	
+	    	 	 	console.log("hello");
 
+	    		line.attr("x2", hc.attr("cx"));
+	        	line.attr("y2", hc.attr("cy"));
+	        	console.log("origin value",c.property("value"));
+				console.log("dest value",hc.property("value"));
+	        	savemap.push({source: c.property("value"), target:  hc.property("value") });
+
+	        	}}*/
 
 	}
 
 	function mousemove() {
 	   var m = d3.mouse(this);
-	    //var c = d3.select(this);
-			line.attr("x2", m[0]);
-            line.attr("y2", m[1]);}
-
-	function mouseup() {
-		lineEnd = true;
-		svgContainer.on("mousemove", null);
-		/*var m = d3.mouse(this);
+	   var test;
 	    var c = d3.select(this);
 
-	    //c.attr("r", r*2);
-	    if (lineEnd==true)
-	     {
-	    	if (Math.sqrt((m[0]-c[0])*(m[0]-c[0]) + (m[1]-c[1])*(m[1]-c[1])) < c.attr("r"))
-	    	 {
-	    		line.attr("x2", m[0])
-	        		.attr("y2", m[1]);
-			 }
-	    }
-	  */
-	  
+
+			line.attr("x2", m[0]);
+            line.attr("y2", m[1]);
+			//c.attr("class", "cS");
+         
+            
+		test = d3.select(this).attr("class") ; 
+			//console.log("this is ",test); 
+
+
+if (lineEnd==true){
+
+	svgContainer.on("mouseup", mouseup);
+}
+
+
+	}
+
+
+ var hc ;
+ var dc;
+ var c;
+
+
+	function mouseup() {
+
+		var m = d3.mouse(this);
+	    var c = d3.select(this);
+	    svgContainer.on("mousemove", null);
+		sav.push(savemap[savemap.length-1]) ;
+		//console.log("meh ",hc.attr("class")); 
+	
+	    	 	if ( hc.attr("class") != dc )
+	    	 	 {
+
+	    	 	 	
+	    	 	 	//console.log("hello");
+
+	    		line.attr("x2", hc.attr("cx"));
+	        	line.attr("y2", hc.attr("cy"));
+	        	console.log("origin value",document.getElementById(d).dataField("valeur"));
+				console.log("dest value",d3.select(this).property("value"));
+	        	//savemap.push({source: c.property("value"), target:  hc.property("value") });
+
+	        	}  
 	}	
 
+
+
 	function mouseupVide() {
-		/*if(!lineEnd)line.remove();
+		if(!lineEnd){
+			line.remove();
+		}
 		else lineEnd = false;		
-		svgContainer.on("mousemove", null);*/
+		svgContainer.on("mousemove", null);
 	}	
 
 	function mouseoverCircle(){
-	   var c = d3.select(this);
+	    hc = d3.select(this);
 	    //c.attr("class", "cS");
 		 //console.log(c.attr("r")); 
-	   // lineEnd = true;	
+		 console.log(d3.select(this).attr("class")); 
+	    lineEnd = true;	 
+		svgContainer.on("mouseup", mouseup);
 
 
 
@@ -317,7 +408,7 @@
         else
              c.attr("class", "cG");
   
-	   // lineEnd = false;	    
+	    lineEnd = false;	    
 	}
 
 	
